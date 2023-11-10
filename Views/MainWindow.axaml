@@ -1,0 +1,46 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PuntoVentaViews.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PuntoVentaViews.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Punto de Venta | ML Grupo Comercial"
+		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+		xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+		xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia">
+
+	<SplitView IsPaneOpen="True"
+           DisplayMode="CompactInline"
+           OpenPaneLength="228">
+		<SplitView.Pane>
+			<Border Padding="16,24">
+				<StackPanel Spacing="8">
+					<Svg Path="avares://PuntoVentaViews/Assets/logo.svg" Width="156"></Svg>
+					<StackPanel Spacing="8" Margin="0,0,0,16">
+						<TextBlock Classes="Body1">Hola</TextBlock>
+						<TextBlock Classes="Body2" Text="{Binding Session.Value.Nombre}"/>
+						<TextBlock Classes="ButtonText">Caja 1</TextBlock>
+					</StackPanel>
+					<ScrollViewer AllowAutoHide="True" MaxHeight="480">
+						<TreeView ItemsSource="{Binding Nodes}" SelectedItem="{Binding MenuSeleccionado}">
+							<TreeView.ItemTemplate>
+								<TreeDataTemplate ItemsSource="{Binding SubNodes}">
+									<StackPanel Orientation="Horizontal" Spacing="4">
+										<materialIcons:MaterialIcon Kind="{Binding Icon}" IsVisible="{Binding !!Icon}"/>
+										<TextBlock Text="{Binding Title}"/>
+									</StackPanel>
+								</TreeDataTemplate>
+							</TreeView.ItemTemplate>
+						</TreeView>
+					</ScrollViewer>
+				</StackPanel>
+			</Border>
+		</SplitView.Pane>
+		<StackPanel>
+			<TransitioningContentControl Grid.Row="0" Grid.Column="1" Content="{Binding CurrentPage}" />
+		</StackPanel>
+	</SplitView>
+</Window>

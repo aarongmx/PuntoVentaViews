@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.LoginView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:LoginViewModel"
+			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles">
+	<Border Padding="16,32,16,32">
+		<StackPanel Spacing="16">
+			<TextBlock Classes="Headline4">Bienvenido de nuevo!</TextBlock>
+			<TextBox
+				UseFloatingWatermark="True"
+				wpf:TextFieldAssist.Label="Correo"
+				Theme="{StaticResource FilledTextBox}"
+				Text="{Binding Email}"/>
+
+			<TextBox
+				UseFloatingWatermark="True"
+				Classes="revealPasswordButton"
+				wpf:TextFieldAssist.Label="Password"
+				PasswordChar="●"
+				Text="{Binding Password}"
+				Theme="{StaticResource FilledTextBox}"/>
+			<Button Command="{Binding LoginCommand}" Height="42" CornerRadius="8">Iniciar sesión</Button>
+		</StackPanel>
+	</Border>
+</UserControl>

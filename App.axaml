@@ -1,0 +1,23 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PuntoVentaViews.App"
+             xmlns:local="using:PuntoVentaViews"
+             RequestedThemeVariant="Default"
+			 xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+			xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia">
+	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+	<Application.DataTemplates>
+		<local:ViewLocator/>
+	</Application.DataTemplates>
+
+	<Application.Styles>
+		<themes:MaterialTheme
+			BaseTheme="Light"
+			PrimaryColor="Indigo"
+			SecondaryColor="LightGreen"
+		/>
+		<dialogHostAvalonia:DialogHostStyles />
+		<materialIcons:MaterialIconStyles />
+	</Application.Styles>
+</Application>

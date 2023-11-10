@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.ProductosView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:ProductosViewModel"
+			  xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+			 xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 >
+	<Border Padding="16,24">
+		<StackPanel Spacing="16">
+			
+			<TextBlock Classes="Headline4">Productos</TextBlock>
+			<ScrollViewer HorizontalScrollBarVisibility="Auto">
+				<DataGrid Name="dgProductos" ItemsSource="{Binding Productos}" AutoGenerateColumns="True" IsReadOnly="True"
+			  GridLinesVisibility="All"
+			  BorderThickness="1" BorderBrush="Gray">
+
+				</DataGrid>
+			</ScrollViewer>
+		</StackPanel>
+	</Border>
+</UserControl>

@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.ClientesView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:ClientesViewModel">
+	<Design.DataContext>
+		<vm:ClientesViewModel/>
+	</Design.DataContext>
+	<Border Padding="24,32">
+		<StackPanel Spacing="16">
+			<TextBlock Text="Clientes" Classes="Headline4" />
+			<DataGrid
+				Margin="2"
+				ItemsSource="{Binding Clientes}"
+				GridLinesVisibility="All"
+				BorderThickness="1"
+				BorderBrush="Gray"
+				Name="clientes"
+				IsReadOnly="True"
+				>
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Id"  Binding="{Binding Id}"/>
+					<DataGridTextColumn Header="RFC"  Binding="{Binding Rfc}"/>
+					<DataGridTextColumn Header="Razón Social"  Binding="{Binding RazonSocial}"/>
+					<DataGridTextColumn Header="Nombre Comercial"  Binding="{Binding NombreComercial}"/>
+				</DataGrid.Columns>
+			</DataGrid>
+			<Button Command="{Binding RefreshClientesCommand}">Refrescar</Button>
+		</StackPanel>
+	</Border>
+</UserControl>

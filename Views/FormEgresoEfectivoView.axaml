@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.FormEgresoEfectivoView"
+            xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:FormEgresoEfectivoViewModel"
+			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles">
+	<Design.DataContext>
+		<vm:FormEgresoEfectivoViewModel />
+	</Design.DataContext>
+	<Border Padding="16,24">
+		<StackPanel Spacing="16">
+			<TextBlock Classes="Headline4">Salida de efectivo</TextBlock>
+			<TextBox UseFloatingWatermark="True"
+							wpf:TextFieldAssist.Label="Monto"
+							Theme="{StaticResource FilledTextBox}"
+							 Text="{Binding Monto}"/>
+			<TextBox UseFloatingWatermark="True"
+							wpf:TextFieldAssist.Label="Motivo"
+							Theme="{StaticResource FilledTextBox}"
+							 Text="{Binding Motivo}" AcceptsReturn="True"/>
+			<Button Command="{Binding GuardarCommand}">Guardar</Button>
+		</StackPanel>
+	</Border>
+</UserControl>

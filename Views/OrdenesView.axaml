@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.OrdenesView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:OrdenesViewModel"
+			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles">
+	<Border Padding="16,24">
+		<StackPanel Spacing="16">
+			<TextBlock Classes="Headline4">Ordenes</TextBlock>
+			<SplitView IsPaneOpen="True" DisplayMode="Inline" PanePlacement="Right" OpenPaneLength="264">
+				<SplitView.Pane>
+					<StackPanel Spacing="16">
+						<StackPanel>
+							<AutoCompleteBox ItemsSource="{Binding Clientes}" FilterMode="ContainsOrdinal" SelectedItem="{Binding ClienteSeleccionado}" Watermark="Cliente" Background="White" />
+						</StackPanel>
+						
+						<StackPanel Spacing="8">
+							<TextBlock Classes="Headline6" Text="{Binding Total,StringFormat='Total: $0.00'}"></TextBlock>
+							<TextBlock Classes="Headline6" Text="{Binding KilosTotal,StringFormat='Total: 0.00 Kg'}"></TextBlock>
+						</StackPanel>
+						<ListBox ItemsSource="{Binding ItemsOrden}">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal" Spacing="12">
+										<TextBlock Classes="Body1" Text="{Binding Producto}"></TextBlock>
+										<TextBox Text="{Binding Kilos,Mode=TwoWay}" />
+										<TextBlock Text="{Binding PrecioUnitario,StringFormat='$0.00'}" />
+										<Button>Editar</Button>
+										<Button>Quitar</Button>
+									</StackPanel>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+						
+						<Button Command="{Binding GenerarOrdenCommand}">Generar Orden</Button>
+					</StackPanel>
+				</SplitView.Pane>
+
+				<ScrollViewer AllowAutoHide="True" MinWidth="240" MaxHeight="768">
+					<ItemsRepeater ItemsSource="{Binding Productos}">
+						<ItemsRepeater.Layout>
+							<WrapLayout Orientation="Horizontal" HorizontalSpacing="16" VerticalSpacing="16">
+							</WrapLayout>
+						</ItemsRepeater.Layout>
+						<ItemsRepeater.ItemTemplate>
+							<DataTemplate>
+								<controls:Card Width="240" Padding="4" VerticalAlignment="Top">
+									<StackPanel>
+										<StackPanel Margin="8">
+											<TextBlock Classes="Headline6" Text="{Binding Nombre}" />
+											<TextBlock Classes="Body2" Text="{Binding }" />
+										</StackPanel>
+										<StackPanel Orientation="Horizontal">
+											<Button Classes="Flat" Content="AGREGAR" Command="{Binding $parent[ItemsRepeater].((vm:OrdenesViewModel)DataContext).AgregarProductoCommand}" CommandParameter="{Binding}" />
+										</StackPanel>
+									</StackPanel>
+								</controls:Card>
+							</DataTemplate>
+						</ItemsRepeater.ItemTemplate>
+					</ItemsRepeater>
+				</ScrollViewer>
+			</SplitView>
+		</StackPanel>
+	</Border>
+</UserControl>

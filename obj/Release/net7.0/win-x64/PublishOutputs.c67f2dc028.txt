@@ -1,0 +1,7 @@
+C:\Users\aaron\Downloads\punto\PuntoVentaViews.pdb
+C:\Users\aaron\Downloads\punto\av_libglesv2.dll
+C:\Users\aaron\Downloads\punto\libHarfBuzzSharp.dll
+C:\Users\aaron\Downloads\punto\libSkiaSharp.dll
+C:\Users\aaron\Downloads\punto\CorePuntoVenta.pdb
+C:\Users\aaron\Downloads\punto\CorePuntoVenta.dll.config
+C:\Users\aaron\Downloads\punto\PuntoVentaViews.exe

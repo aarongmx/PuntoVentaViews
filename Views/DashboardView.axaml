@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.DashboardView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:DashboardViewModel"
+			 xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles">
+	<Border Padding="16, 24">
+		<StackPanel Spacing="16">
+			<TextBlock Classes="Headline4">Gráficos</TextBlock>
+			<WrapPanel Orientation="Horizontal">
+				<controls:Card Width="532" Height="256" Margin="8">
+					<lvc:CartesianChart Series="{Binding Series}" YAxes="{Binding YAxes}" />
+				</controls:Card>
+				<controls:Card Width="532" Height="265" Margin="8">
+					<lvc:CartesianChart Series="{Binding Series}" YAxes="{Binding YAxes}" />
+				</controls:Card>
+				<controls:Card Width="532" Height="256" Margin="8">
+					<lvc:CartesianChart Series="{Binding Series}" YAxes="{Binding YAxes}" />
+				</controls:Card>
+			</WrapPanel>
+		</StackPanel>
+	</Border>
+</UserControl>

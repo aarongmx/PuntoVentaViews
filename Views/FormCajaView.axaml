@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.FormCajaView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:FormCajaViewModel"
+			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
+	<Border Padding="16,24">
+		<StackPanel Spacing="16">
+
+			<TextBlock Classes="Headline4">Caja</TextBlock>
+			<AutoCompleteBox ItemsSource="{Binding Ordenes}" FilterMode="ContainsOrdinal" SelectedItem="{Binding OrdenSeleccionada, Mode=TwoWay}" Text="{Binding SearchOrden}" Watermark="Orden" Background="White">
+			</AutoCompleteBox>
+			<TextBox UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="Efectivo"
+						Theme="{StaticResource FilledTextBox}"
+						Text="{Binding MontoPagado}"/>
+			<StackPanel Orientation="Horizontal" Spacing="16">
+				<TextBlock Classes="Headline5" Text="{Binding Adeudo,StringFormat='Total: $0.00'}"></TextBlock>
+				<TextBlock Classes="Body1" Text="{Binding Cambio,StringFormat='Cambio: $0.00'}"></TextBlock>
+			</StackPanel>
+			<WrapPanel  Orientation="Horizontal">
+				<Grid ColumnDefinitions="56,12,56,12,56,12,56" RowDefinitions="56,12,56,12,56,12,56">
+					<Button Grid.Row="0" Grid.Column="0" Command="{Binding BuildNumberCommand}" CommandParameter="7">7</Button>
+					<Button Grid.Row="0" Grid.Column="2" Command="{Binding BuildNumberCommand}" CommandParameter="8">8</Button>
+					<Button Grid.Row="0" Grid.Column="4" Command="{Binding BuildNumberCommand}" CommandParameter="9">9</Button>
+					<Button Grid.Row="0" Grid.Column="6" Content="{materialIcons:MaterialIconExt Kind=Clear}" Command="{Binding ClearErrorCommand}"/>
+
+					<Button Grid.Row="2" Grid.Column="0" Command="{Binding BuildNumberCommand}" CommandParameter="4">4</Button>
+					<Button Grid.Row="2" Grid.Column="2" Command="{Binding BuildNumberCommand}" CommandParameter="5">5</Button>
+					<Button Grid.Row="2" Grid.Column="4" Command="{Binding BuildNumberCommand}" CommandParameter="6">6</Button>
+					<Button Grid.Row="2" Grid.Column="6" Content="{materialIcons:MaterialIconExt Kind=Delete}"  />
+
+					<Button Grid.Row="4" Grid.Column="0" Command="{Binding BuildNumberCommand}" CommandParameter="1">1</Button>
+					<Button Grid.Row="4" Grid.Column="2" Command="{Binding BuildNumberCommand}" CommandParameter="2">2</Button>
+					<Button Grid.Row="4" Grid.Column="4" Command="{Binding BuildNumberCommand}" CommandParameter="3">3</Button>
+					<Button Grid.Row="4" Grid.Column="6" Grid.RowSpan="3">
+						<materialIcons:MaterialIcon Kind="Accelerometer" Foreground="White"/>
+					</Button>
+
+
+					<Button Grid.Row="6" Grid.Column="0" Command="{Binding BuildNumberCommand}" CommandParameter="0">0</Button>
+					<Button Grid.Row="6" Grid.Column="2" Command="{Binding BuildNumberCommand}" CommandParameter="00">00</Button>
+					<Button Grid.Row="6" Grid.Column="4" Command="{Binding BuildNumberCommand}" CommandParameter=".">.</Button>
+				</Grid>
+			</WrapPanel>
+			<StackPanel>
+				<Button Command="{Binding StoreCommand}">Cobrar</Button>
+			</StackPanel>
+		</StackPanel>
+	</Border>
+</UserControl>

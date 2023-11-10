@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.VentasView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:VentasViewModel"
+			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles">
+	<Border Padding="24,32">
+		<StackPanel Spacing="16">
+			<TextBlock Text="Ventas" Classes="Headline4" />
+			<StackPanel Spacing="16" Orientation="Horizontal">
+				<DatePicker DayFormat="ddd dd" SelectedDate="{Binding FechaInicio}" wpf:TextFieldAssist.Label="Fecha Inicio" />
+				<DatePicker DayFormat="ddd dd" SelectedDate="{Binding FechaFin}" wpf:TextFieldAssist.Label="Fecha Término" />
+			</StackPanel>
+			<DataGrid
+				ItemsSource="{Binding Ventas}"
+				IsReadOnly="True"
+				GridLinesVisibility="All"
+				BorderThickness="1"
+				BorderBrush="DarkSlateBlue"
+				MaxHeight="512"
+				>
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+					<DataGridTextColumn Header="Orden" Binding="{Binding Orden.Referencia}"/>
+					<DataGridTextColumn Header="Cliente" Binding="{Binding Orden.Cliente.RazonSocial}"/>
+					<DataGridTextColumn Header="Total" Binding="{Binding Total,StringFormat='$0.00'}"/>
+					<DataGridTextColumn Header="Iva" Binding="{Binding Iva,StringFormat='$0.00'}"/>
+					<DataGridTextColumn Header="Subtotal"  Binding="{Binding Subtotal,StringFormat='$0.00'}"/>
+					<DataGridTextColumn Header="Fecha Orden"  Binding="{Binding Orden.Fecha}"/>
+				</DataGrid.Columns>
+			</DataGrid>
+			<Button Command="{Binding DescargarReporteCommand}">Descargar reporte</Button>
+		</StackPanel>
+	</Border>
+</UserControl>

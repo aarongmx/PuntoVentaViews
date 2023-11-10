@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.HistorialCajaView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:HistorialCajaViewModel">
+	<Border Padding="16 24">
+		<StackPanel Spacing="16">
+			<TextBlock Classes="Headline4">Historial</TextBlock>
+			<ListBox ItemsSource="{Binding Historial}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel>
+							<WrapPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Empleado.Nombre}"/>	
+								<Border CornerRadius="16" Padding="8 4" Background="Green" HorizontalAlignment="Left" VerticalAlignment="Center">
+									<TextBlock Text="{Binding Movimiento}" FontSize="10" FontWeight="Bold"  Foreground="White" TextAlignment="Center"/>
+								</Border>
+							</WrapPanel>
+							<TextBlock Text="{Binding Motivo}"/>
+							<TextBlock Text="{Binding Monto,StringFormat='Monto: $0.00'}"/>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</StackPanel>
+	</Border>
+</UserControl>

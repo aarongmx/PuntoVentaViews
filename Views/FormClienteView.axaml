@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.FormClienteView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+	         x:DataType="vm:FormClienteViewModel"
+			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles">
+	<Design.DataContext>
+		<vm:FormClienteViewModel/>
+	</Design.DataContext>
+	<Border Padding="16,24">
+		<StackPanel Spacing="16">
+			<TextBlock Classes="Headline4">Nuevo cliente</TextBlock>
+			<Grid RowDefinitions="Auto,16,Auto,16,Auto,16,Auto" ColumnDefinitions="*,16,*,16,*">
+				<TextBox UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="RFC"
+						Theme="{StaticResource FilledTextBox}"
+						 Grid.Column="0"
+						 Grid.Row="0"
+						 Text="{Binding Rfc}"/>
+				<TextBox UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="Razón Social"
+						Theme="{StaticResource FilledTextBox}"
+						 Grid.Column="2"
+						 Grid.Row="0"
+						 Text="{Binding RazonSocial}"/>
+				<TextBox UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="Nombre Comercial"
+						Theme="{StaticResource FilledTextBox}"
+					 Grid.Column="4"
+					 Grid.Row="0"
+						 Text="{Binding NombreComercial}"/>
+
+				<TextBox UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="Calle"
+						Theme="{StaticResource FilledTextBox}"
+						 Grid.Column="0"
+						 Grid.Row="2"
+						 Grid.ColumnSpan="3"
+						 Text="{Binding Calle}"/>
+				<TextBox UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="Número exterior"
+						Theme="{StaticResource FilledTextBox}"
+						 Grid.Column="4"
+						 Grid.Row="2"
+						 Text="{Binding NumeroExterior}"/>
+				<TextBox UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="Número interior"
+						Theme="{StaticResource FilledTextBox}"
+						 Grid.Column="0"
+						 Grid.Row="4"
+						 Text="{Binding NumeroInterior}"/>
+				<TextBox UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="Código Postal"
+						Theme="{StaticResource FilledTextBox}"
+						 Grid.Column="2"
+						 Grid.Row="4"
+						 Text="{Binding CodigoPostal}"/>
+
+				<Button Grid.Row="6" Grid.ColumnSpan="6" Command="{Binding SaveCommand}">Guardar</Button>
+			</Grid>
+		</StackPanel>
+	</Border>
+</UserControl>

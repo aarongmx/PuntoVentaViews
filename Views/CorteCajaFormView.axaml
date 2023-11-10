@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PuntoVentaViews.Views.CorteCajaFormView"
+			 xmlns:vm="using:PuntoVentaViews.ViewModels"
+			 x:DataType="vm:CorteCajaFormViewModel">
+	<Border Padding="16,24">
+		<StackPanel>
+			<StackPanel Width="360">
+				<TextBlock Classes="Headline5">Dinero en caja</TextBlock>
+				<WrapPanel>
+					<TextBlock>Fondo de caja</TextBlock>
+					<TextBlock Text="{Binding MontoInicialCaja}"></TextBlock>
+				</WrapPanel>
+				<WrapPanel>
+					<TextBlock>Ventas en efectivo</TextBlock>
+					<TextBlock Text="{Binding TotalVentaEfectivo}"/>
+				</WrapPanel>
+				<WrapPanel>
+					<TextBlock>Abono en efectivo</TextBlock>
+					<TextBlock/>
+				</WrapPanel>
+				<WrapPanel>
+					<TextBlock>Entradas</TextBlock>
+					<TextBlock Text="{Binding TotalIngresosCaja}"/>
+				</WrapPanel>
+				<WrapPanel>
+					<TextBlock>Salidas</TextBlock>
+					<TextBlock Text="{Binding TotalEgresosCaja}"/>
+				</WrapPanel>
+			</StackPanel>
+			<Button Command="{Binding CrearCorteCommand}">Crear corte</Button>
+		</StackPanel>
+	</Border>
+</UserControl>
