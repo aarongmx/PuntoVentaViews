@@ -1,7 +1,0 @@
-C:\Users\aaron\Downloads\PuntoVentaViews.pdb
-C:\Users\aaron\Downloads\av_libglesv2.dll
-C:\Users\aaron\Downloads\libHarfBuzzSharp.dll
-C:\Users\aaron\Downloads\libSkiaSharp.dll
-C:\Users\aaron\Downloads\CorePuntoVenta.pdb
-C:\Users\aaron\Downloads\CorePuntoVenta.dll.config
-C:\Users\aaron\Downloads\PuntoVentaViews.exe
