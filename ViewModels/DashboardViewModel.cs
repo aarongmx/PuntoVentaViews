@@ -1,13 +1,10 @@
 ﻿using CorePuntoVenta;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView.VisualElements;
-using SkiaSharp;
 
 namespace PuntoVentaViews.ViewModels
 {
-    public class DashboardViewModel : ViewModelBase
+    public class DashboardViewModel(ApplicationDbContext context) : ViewModelBase
     {
         public ISeries[] Series { get; set; } = {
             new LineSeries<double>
@@ -17,19 +14,15 @@ namespace PuntoVentaViews.ViewModels
             }
         };
 
-        public Axis[] YAxes { get; set; } = new Axis[]
-        {
+        public Axis[] YAxes { get; set; } =
+        [
             new Axis()
             {
                 Name = "Ventas"
             }
-        };
+        ];
 
 
-        private readonly ApplicationDbContext _context;
-        public DashboardViewModel(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        private readonly ApplicationDbContext _context = context;
     }
 }

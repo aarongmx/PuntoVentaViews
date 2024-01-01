@@ -1,19 +1,14 @@
 ﻿using ReactiveUI;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing.Printing;
-using System.Linq;
 using System.Runtime.Versioning;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PuntoVentaViews.ViewModels
 {
     public class ConfiguracionViewModel : ViewModelBase
     {
-        private List<string> _impresoras = new();
-        private string _impresoraSeleccionada;
+        private List<string> _impresoras = [];
+        private string? _impresoraSeleccionada;
 
         public List<string> Impresoras
         {
@@ -23,7 +18,7 @@ namespace PuntoVentaViews.ViewModels
 
         public string ImpresoraSeleccionada
         {
-            get => _impresoraSeleccionada;
+            get => _impresoraSeleccionada ?? string.Empty;
             set => this.RaiseAndSetIfChanged(ref _impresoraSeleccionada, value);
         }
 
@@ -33,7 +28,6 @@ namespace PuntoVentaViews.ViewModels
             foreach (string impresora in PrinterSettings.InstalledPrinters)
             {
                 Impresoras.Add(impresora);
-                Debug.WriteLine(impresora);
             }
         }
     }

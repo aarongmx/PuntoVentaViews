@@ -9,6 +9,7 @@
 			 x:DataType="vm:CategoriaFormViewModel">
 	<Border Padding="16 24">
 		<StackPanel Spacing="16">
+			<TextBlock Classes="Headline4">Categoria</TextBlock>
 			<TextBox UseFloatingWatermark="True"
 				wpf:TextFieldAssist.Label="Nombre"
 				Theme="{StaticResource FilledTextBox}"

@@ -1,15 +1,9 @@
 ﻿using CorePuntoVenta;
-using CorePuntoVenta.Domain.Administracion.Actions;
 using CorePuntoVenta.Domain.Helpers;
-using DynamicData;
 using PuntoVentaViews.Components;
 using PuntoVentaViews.Models;
 using ReactiveUI;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Reactive;
-using System.Windows.Input;
 
 namespace PuntoVentaViews.ViewModels
 {

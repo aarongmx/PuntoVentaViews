@@ -1,15 +1,9 @@
-﻿using Avalonia.Controls;
-using CorePuntoVenta.Domain.Clientes.Actions;
+﻿using CorePuntoVenta.Domain.Clientes.Actions;
 using CorePuntoVenta.Domain.Clientes.Data;
 using ReactiveUI;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 
@@ -17,7 +11,7 @@ namespace PuntoVentaViews.ViewModels
 {
     public class ClientesViewModel : ViewModelBase
     {
-        public ObservableCollection<ClienteData> _clientes = new();
+        public ObservableCollection<ClienteData> _clientes = [];
 
         public ICommand RefreshClientesCommand { get; }
 
@@ -37,7 +31,7 @@ namespace PuntoVentaViews.ViewModels
         public void RefreshClientes()
         {
             Clientes.Clear();
-            List<ClienteData> data = (new ListClientesAction(new CorePuntoVenta.ApplicationDbContext())).Execute().OrderBy(cliente => cliente.Id).ToList();
+            List<ClienteData> data = [.. (new ListClientesAction(new CorePuntoVenta.ApplicationDbContext())).Execute().OrderBy(cliente => cliente.Id)];
             data.ForEach(Clientes.Add);
         }
 

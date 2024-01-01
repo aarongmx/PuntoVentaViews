@@ -1,21 +1,14 @@
-﻿using Avalonia.Controls;
-using CorePuntoVenta;
+﻿using CorePuntoVenta;
 using CorePuntoVenta.Domain.Cajas.Actions;
 using CorePuntoVenta.Domain.Ordenes.Data;
 using CorePuntoVenta.Domain.Ordenes.Mappers;
-using CorePuntoVenta.Domain.Ordenes.Models;
 using CorePuntoVenta.Domain.Ventas.Data;
 using CorePuntoVenta.Domain.Ventas.Mappers;
-using DialogHostAvalonia;
 using Material.Dialog;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PuntoVentaViews.ViewModels
@@ -166,7 +159,7 @@ namespace PuntoVentaViews.ViewModels
                 Ordenes = new ObservableCollection<OrdenData>(data);
                 //OrdenSeleccionada = null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 DialogHelper.CreateAlertDialog(new AlertDialogBuilderParams()
                 {

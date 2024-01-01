@@ -4,12 +4,8 @@ using CorePuntoVenta.Domain.Ventas.Data;
 using Material.Dialog;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PuntoVentaViews.ViewModels
@@ -40,8 +36,7 @@ namespace PuntoVentaViews.ViewModels
                     ContentHeader = "Se creo el reporte correctamente!",
                     SupportingText = "Reporte creado"
                 }).Show();
-            }
-            catch (Exception ex)
+            }catch (Exception)
             {
                 DialogHelper.CreateAlertDialog(new AlertDialogBuilderParams()
                 {

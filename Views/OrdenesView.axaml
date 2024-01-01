@@ -7,63 +7,76 @@
 			 xmlns:vm="using:PuntoVentaViews.ViewModels"
 			 x:DataType="vm:OrdenesViewModel"
 			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
-			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles">
+			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+			 xmlns:data="using:CorePuntoVenta.Domain.Ordenes.Data">
 	<Border Padding="16,24">
-		<StackPanel Spacing="16">
-			<TextBlock Classes="Headline4">Ordenes</TextBlock>
-			<SplitView IsPaneOpen="True" DisplayMode="Inline" PanePlacement="Right" OpenPaneLength="264">
-				<SplitView.Pane>
-					<StackPanel Spacing="16">
-						<StackPanel>
-							<AutoCompleteBox ItemsSource="{Binding Clientes}" FilterMode="ContainsOrdinal" SelectedItem="{Binding ClienteSeleccionado}" Watermark="Cliente" Background="White" />
-						</StackPanel>
-						
-						<StackPanel Spacing="8">
-							<TextBlock Classes="Headline6" Text="{Binding Total,StringFormat='Total: $0.00'}"></TextBlock>
-							<TextBlock Classes="Headline6" Text="{Binding KilosTotal,StringFormat='Total: 0.00 Kg'}"></TextBlock>
-						</StackPanel>
-						<ListBox ItemsSource="{Binding ItemsOrden}">
-							<ListBox.ItemTemplate>
-								<DataTemplate>
-									<StackPanel Orientation="Horizontal" Spacing="12">
-										<TextBlock Classes="Body1" Text="{Binding Producto}"></TextBlock>
-										<TextBox Text="{Binding Kilos,Mode=TwoWay}" />
-										<TextBlock Text="{Binding PrecioUnitario,StringFormat='$0.00'}" />
-										<Button>Editar</Button>
-										<Button>Quitar</Button>
-									</StackPanel>
-								</DataTemplate>
-							</ListBox.ItemTemplate>
-						</ListBox>
-						
-						<Button Command="{Binding GenerarOrdenCommand}">Generar Orden</Button>
-					</StackPanel>
-				</SplitView.Pane>
+		<StackPanel>
+			<TextBlock Classes="h1">Ordenes</TextBlock>
+			<Button Command="{Binding AddOrderCommand}">Agregar orden</Button>
+			<TabControl ItemsSource="{Binding Ordenes}" x:DataType="vm:OrdenesViewModel" SelectedItem="{Binding OrdenSeleccionada}" AutoScrollToSelectedItem="True">
+				<TabControl.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Id}" />
+					</DataTemplate>
+				</TabControl.ItemTemplate>
+				<TabControl.ContentTemplate>
+					<DataTemplate x:DataType="data:OrdenData">
+						<SplitView IsPaneOpen="True" DisplayMode="Inline" OpenPaneLength="300">
+							<SplitView.Pane>
+								<StackPanel>
+									<ComboBox PlaceholderText="Cliente" ItemsSource="{Binding $parent[TabControl].((vm:OrdenesViewModel)DataContext).Clientes}" SelectedItem="{Binding Cliente}">
+										<ComboBox.ItemTemplate>
+											<DataTemplate>
+												<TextBlock Text="{Binding RazonSocial}"/>
+											</DataTemplate>
+										</ComboBox.ItemTemplate>
+									</ComboBox>
+									<TextBox Text="{Binding $parent[TabControl].((vm:OrdenesViewModel)DataContext).OrdenSeleccionada.Total}" />
+									<TextBox Text="{Binding $parent[TabControl].((vm:OrdenesViewModel)DataContext).OrdenSeleccionada.Kilos}" />
 
-				<ScrollViewer AllowAutoHide="True" MinWidth="240" MaxHeight="768">
-					<ItemsRepeater ItemsSource="{Binding Productos}">
-						<ItemsRepeater.Layout>
-							<WrapLayout Orientation="Horizontal" HorizontalSpacing="16" VerticalSpacing="16">
-							</WrapLayout>
-						</ItemsRepeater.Layout>
-						<ItemsRepeater.ItemTemplate>
-							<DataTemplate>
-								<controls:Card Width="240" Padding="4" VerticalAlignment="Top">
-									<StackPanel>
-										<StackPanel Margin="8">
-											<TextBlock Classes="Headline6" Text="{Binding Nombre}" />
-											<TextBlock Classes="Body2" Text="{Binding }" />
-										</StackPanel>
-										<StackPanel Orientation="Horizontal">
-											<Button Classes="Flat" Content="AGREGAR" Command="{Binding $parent[ItemsRepeater].((vm:OrdenesViewModel)DataContext).AgregarProductoCommand}" CommandParameter="{Binding}" />
-										</StackPanel>
-									</StackPanel>
-								</controls:Card>
-							</DataTemplate>
-						</ItemsRepeater.ItemTemplate>
-					</ItemsRepeater>
-				</ScrollViewer>
-			</SplitView>
+									<ItemsRepeater  ItemsSource="{Binding $parent[TabControl].((vm:OrdenesViewModel)DataContext).OrdenSeleccionada.ItemsOrden}" >
+										<ItemsRepeater.ItemTemplate>
+											<DataTemplate>
+												<Border Margin="0,10,0,0"
+													CornerRadius="5"
+													BorderBrush="Blue" BorderThickness="1"
+													Padding="5">
+													<StackPanel Orientation="Horizontal">
+														<TextBlock Text="{Binding Producto.Nombre}"/>
+														<TextBox Text="{Binding Kilos}"/>
+													</StackPanel>
+												</Border>
+											</DataTemplate>
+										</ItemsRepeater.ItemTemplate>
+									</ItemsRepeater>
+
+									<Button Command="{Binding $parent[TabControl].((vm:OrdenesViewModel)DataContext).RegistrarOrdenCommand}" CommandParameter="{Binding .}">Registrar</Button>
+								</StackPanel>
+							</SplitView.Pane>
+							<Border Margin="16,32">
+								<UniformGrid Columns="3">
+									<ItemsControl ItemsSource="{Binding $parent[TabControl].((vm:OrdenesViewModel)DataContext).Productos}">
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<Border Margin="10"
+													CornerRadius="6"
+													BorderBrush="Orange" BorderThickness="1"
+													Padding="16">
+													<StackPanel>
+														<TextBlock Text="{Binding Nombre}"/>
+														<TextBlock Text="{Binding PrecioUnitario}"/>
+														<Button Command="{Binding $parent[TabControl].((vm:OrdenesViewModel)DataContext).AgregarProductoCommand}" CommandParameter="{Binding .}">Agregar</Button>
+													</StackPanel>
+												</Border>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+								</UniformGrid>
+							</Border>
+						</SplitView>
+					</DataTemplate>
+				</TabControl.ContentTemplate>
+			</TabControl>
 		</StackPanel>
 	</Border>
 </UserControl>

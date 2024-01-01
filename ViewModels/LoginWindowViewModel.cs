@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using CorePuntoVenta;
 using CorePuntoVenta.Domain.Administracion.Data;
@@ -7,12 +6,8 @@ using CorePuntoVenta.Domain.Helpers;
 using PuntoVentaViews.Views;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PuntoVentaViews.ViewModels

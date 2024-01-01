@@ -1,17 +1,12 @@
 ﻿using CorePuntoVenta.Domain.Clientes.Actions;
 using CorePuntoVenta.Domain.Clientes.Data;
-using CorePuntoVenta.Domain.Direcciones.Actions;
 using CorePuntoVenta.Domain.Direcciones.Data;
 using Material.Dialog;
 using Material.Dialog.Icons;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PuntoVentaViews.ViewModels

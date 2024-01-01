@@ -1,43 +1,42 @@
-﻿using Avalonia.Media.Imaging;
-using Avalonia.Platform;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CorePuntoVenta;
+﻿using CorePuntoVenta;
 using CorePuntoVenta.Domain.Clientes.Actions;
 using CorePuntoVenta.Domain.Clientes.Data;
 using CorePuntoVenta.Domain.Helpers;
 using CorePuntoVenta.Domain.Ordenes.Actions;
 using CorePuntoVenta.Domain.Ordenes.Data;
+using CorePuntoVenta.Domain.Ordenes.Models;
 using CorePuntoVenta.Domain.Productos.Actions;
 using CorePuntoVenta.Domain.Productos.Data;
-using DynamicData.Binding;
 using Material.Dialog;
-using NodaTime;
 using PuntoVentaViews.Models;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PuntoVentaViews.ViewModels
 {
     public class OrdenesViewModel : ViewModelBase
     {
-        private ObservableCollection<ProductoData> _productos = new();
+        private ObservableCollection<ProductoData> _productos = [];
 
-        private ObservableCollection<ClienteData> _clientes = new();
+        private ObservableCollection<ClienteData> _clientes = [];
 
-        private ObservableCollection<ItemOrderUI> _itemsOrden = new();
+        private ObservableCollection<ItemOrderUI> _itemsOrden = [];
+
+        private ObservableCollection<OrdenData> _ordenes = [
+            new OrdenData() { Id = 1 },
+        ];
 
         public ICommand AgregarProductoCommand { get; }
 
         public ICommand GenerarOrdenCommand { get; }
+
+        public ICommand AddOrderCommand { get; }
+
+        public ICommand RegistrarOrdenCommand { get; }
 
         private string _precioUnitario;
 
@@ -53,6 +52,19 @@ namespace PuntoVentaViews.ViewModels
 
         private readonly ApplicationDbContext _context;
 
+        private OrdenData _ordenSeleccionada;
+
+        public OrdenData OrdenSeleccionada
+        {
+            get => _ordenSeleccionada;
+            set => this.RaiseAndSetIfChanged(ref _ordenSeleccionada, value);
+        }
+
+        public ObservableCollection<OrdenData> Ordenes
+        {
+            get => _ordenes;
+            set => this.RaiseAndSetIfChanged(ref _ordenes, value);
+        }
 
         public ObservableCollection<ProductoData> Productos
         {
@@ -74,20 +86,30 @@ namespace PuntoVentaViews.ViewModels
 
         private void AgregarProducto(ProductoData productoData)
         {
-            ItemOrderUI itemOrderUI = new()
+            if (OrdenSeleccionada.ItemsOrden.Any(item => item.ProductoId == productoData.Id))
             {
-                Kilos = "1",
-                PrecioUnitario = "" + productoData.PrecioUnitario,
-                Producto = productoData.Nombre,
-                ProductoId = (int)productoData.Id!,
-            };
+                var itemSelected = OrdenSeleccionada.ItemsOrden.First(item => item.ProductoId == productoData.Id);
+                itemSelected.Kilos += 1;
+            }
 
-            ItemsOrden.Add(itemOrderUI);
-            CalcularTotales();
+            if (!OrdenSeleccionada.ItemsOrden.Any(item => item.ProductoId == productoData.Id))
+            {
+                ItemOrdenData item = new()
+                {
+                    Kilos = 1,
+                    ProductoId = (int)productoData.Id,
+                    Producto = productoData,
+                    Total = 1 * productoData.PrecioUnitario,
+                    PrecioUnitario = productoData.PrecioUnitario,
+                };
+                OrdenSeleccionada?.ItemsOrden?.Add(item);
+                OrdenSeleccionada.Total = (new CalcularTotalOrdenAction()).Execute(OrdenSeleccionada.ItemsOrden);
+            }
+        }
 
-            /*ProductoSeleccionado = null!;
-            PrecioUnitario = "";
-            Kilos = "";*/
+        private void AddOrder()
+        {
+            _ordenes.Add(new OrdenData() { Id = 2 });
         }
 
         private void GenerarOrden()
@@ -124,7 +146,6 @@ namespace PuntoVentaViews.ViewModels
                 {
                     ContentHeader = "Orden creada!",
                     DialogHeaderIcon = Material.Dialog.Icons.DialogIconKind.Success,
-                    Width = 364,
                     SupportingText = "Orden creada correctamente!"
                 }).Show();
             }
@@ -140,6 +161,17 @@ namespace PuntoVentaViews.ViewModels
             }
         }
 
+        private void RegistrarOrden(OrdenData ordenData)
+        {
+            ordenData.ItemsOrden?.ToList().ForEach(item =>
+            {
+                Debug.WriteLine(item.ProductoId);
+                Debug.WriteLine(item.Kilos);
+                Debug.WriteLine(item.Total);
+                Debug.WriteLine(item.PrecioUnitario);
+            });
+            Debug.WriteLine(ordenData.Kilos);
+        }
 
         private void CalcularTotales()
         {
@@ -201,7 +233,6 @@ namespace PuntoVentaViews.ViewModels
             set => this.RaiseAndSetIfChanged(ref _total, value);
         }
 
-
         public double KilosTotal
         {
             get => _kilosTotal;
@@ -216,8 +247,6 @@ namespace PuntoVentaViews.ViewModels
 
             Debug.WriteLine(session.Value.Id);
 
-            //Image = LoadFromResource(new Uri(@"C:\punto_venta\images\huevo.jpg"));
-
             var productos = new ListProductosAction(context).Execute();
             Productos = new ObservableCollection<ProductoData>(productos);
 
@@ -227,7 +256,11 @@ namespace PuntoVentaViews.ViewModels
             AgregarProductoCommand = ReactiveCommand.Create<ProductoData>(AgregarProducto);
             GenerarOrdenCommand = ReactiveCommand.Create(GenerarOrden);
 
-            ItemsOrden = new();
+            AddOrderCommand = ReactiveCommand.Create(AddOrder);
+
+            RegistrarOrdenCommand = ReactiveCommand.Create<OrdenData>(RegistrarOrden);
+
+            ItemsOrden = [];
         }
     }
 }

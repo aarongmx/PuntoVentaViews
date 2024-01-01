@@ -1,12 +1,7 @@
-﻿using Avalonia.Rendering.Composition;
-using CorePuntoVenta;
+﻿using CorePuntoVenta;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PuntoVentaViews.ViewModels
@@ -61,11 +56,6 @@ namespace PuntoVentaViews.ViewModels
             var totalIngresosEgresos = _context.ItemsCaja.Where(i => i.CajaId == 1).Sum(i => i.Monto);
             var totalEgresos = _context.ItemsCaja.Where(i => i.CajaId == 1).Where(i => i.Monto < 0).Sum(i => i.Monto);
             var totalIngresos = _context.ItemsCaja.Where(i => i.CajaId == 1).Where(i => i.Monto > 0).Sum(i => i.Monto);
-
-            Debug.WriteLine(totalOrden);
-            Debug.WriteLine(totalIngresos);
-            Debug.WriteLine(totalEgresos);
-            Debug.WriteLine(totalIngresosEgresos);
         }
     }
 }

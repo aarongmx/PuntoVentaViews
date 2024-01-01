@@ -1,5 +1,4 @@
-﻿using CorePuntoVenta.Domain.Helpers;
-using ReactiveUI;
+﻿using ReactiveUI;
 
 namespace PuntoVentaViews.ViewModels
 {
