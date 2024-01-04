@@ -1,4 +1,5 @@
-﻿using CorePuntoVenta.Domain.Clientes.Actions;
+﻿using CorePuntoVenta;
+using CorePuntoVenta.Domain.Clientes.Actions;
 using CorePuntoVenta.Domain.Clientes.Data;
 using CorePuntoVenta.Domain.Direcciones.Data;
 using Material.Dialog;
@@ -13,6 +14,7 @@ namespace PuntoVentaViews.ViewModels
 {
     public class FormClienteViewModel : ViewModelBase
     {
+        private ApplicationDbContext _context;
         private string _rfc = string.Empty;
 
         [Required]
@@ -88,7 +90,7 @@ namespace PuntoVentaViews.ViewModels
 
                 ClienteData clienteData = new () { NombreComercial = NombreComercial, Rfc = Rfc, RazonSocial = RazonSocial };
 
-                var cliente = (new StoreClienteAction(new CorePuntoVenta.ApplicationDbContext())).Execute(clienteData, direccionData);
+                var cliente = (new StoreClienteAction(_context)).Execute(clienteData, direccionData);
                 Clear();
 
                 var dialog = DialogHelper.CreateAlertDialog(new AlertDialogBuilderParams
@@ -126,8 +128,9 @@ namespace PuntoVentaViews.ViewModels
             RazonSocial = string.Empty;
         }
 
-        public FormClienteViewModel()
+        public FormClienteViewModel(ApplicationDbContext context)
         {
+            _context = context;
             SaveCommand = ReactiveCommand.Create(Save);
         }
 
