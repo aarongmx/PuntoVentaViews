@@ -1,4 +1,5 @@
-﻿using CorePuntoVenta.Domain.Clientes.Actions;
+﻿using CorePuntoVenta;
+using CorePuntoVenta.Domain.Clientes.Actions;
 using CorePuntoVenta.Domain.Clientes.Data;
 using ReactiveUI;
 using System.Collections.Generic;
@@ -11,13 +12,15 @@ namespace PuntoVentaViews.ViewModels
 {
     public class ClientesViewModel : ViewModelBase
     {
+        public ApplicationDbContext _context;
         public ObservableCollection<ClienteData> _clientes = [];
 
         public ICommand RefreshClientesCommand { get; }
 
-        public ClientesViewModel()
+        public ClientesViewModel(ApplicationDbContext context)
         {
-            var data = (new ListClientesAction(new CorePuntoVenta.ApplicationDbContext())).Execute().OrderBy(cliente => cliente.Id);
+            _context = context;
+            var data = (new ListClientesAction(_context)).Execute().OrderBy(cliente => cliente.Id);
             Clientes = new ObservableCollection<ClienteData>(data);
             RefreshClientesCommand = ReactiveCommand.Create(RefreshClientes);
         }
