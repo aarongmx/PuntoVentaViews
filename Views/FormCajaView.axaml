@@ -7,49 +7,82 @@
 			 xmlns:vm="using:PuntoVentaViews.ViewModels"
 			 x:DataType="vm:FormCajaViewModel"
 			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
-			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles">
 	<Border Padding="16,24">
-		<StackPanel Spacing="16">
+		<DockPanel>
+			<StackPanel Spacing="16" DockPanel.Dock="Top">
+				<TextBlock Classes="Headline4">Caja</TextBlock>
 
-			<TextBlock Classes="Headline4">Caja</TextBlock>
-			<AutoCompleteBox ItemsSource="{Binding Ordenes}" FilterMode="ContainsOrdinal" SelectedItem="{Binding OrdenSeleccionada, Mode=TwoWay}" Text="{Binding SearchOrden}" Watermark="Orden" Background="White">
-			</AutoCompleteBox>
-			<TextBox UseFloatingWatermark="True"
-						wpf:TextFieldAssist.Label="Efectivo"
+				<WrapPanel>
+					<TextBox
+						UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="Número de orden"
 						Theme="{StaticResource FilledTextBox}"
-						Text="{Binding MontoPagado}"/>
-			<StackPanel Orientation="Horizontal" Spacing="16">
-				<TextBlock Classes="Headline5" Text="{Binding Adeudo,StringFormat='Total: $0.00'}"></TextBlock>
-				<TextBlock Classes="Body1" Text="{Binding Cambio,StringFormat='Cambio: $0.00'}"></TextBlock>
+						Text="{Binding OrdenId}"/>
+					<Button Command="{Binding BuscarOrdenCommand}">Buscar orden</Button>
+				</WrapPanel>
 			</StackPanel>
-			<WrapPanel  Orientation="Horizontal">
-				<Grid ColumnDefinitions="56,12,56,12,56,12,56" RowDefinitions="56,12,56,12,56,12,56">
-					<Button Grid.Row="0" Grid.Column="0" Command="{Binding BuildNumberCommand}" CommandParameter="7">7</Button>
-					<Button Grid.Row="0" Grid.Column="2" Command="{Binding BuildNumberCommand}" CommandParameter="8">8</Button>
-					<Button Grid.Row="0" Grid.Column="4" Command="{Binding BuildNumberCommand}" CommandParameter="9">9</Button>
-					<Button Grid.Row="0" Grid.Column="6" Content="{materialIcons:MaterialIconExt Kind=Clear}" Command="{Binding ClearErrorCommand}"/>
 
-					<Button Grid.Row="2" Grid.Column="0" Command="{Binding BuildNumberCommand}" CommandParameter="4">4</Button>
-					<Button Grid.Row="2" Grid.Column="2" Command="{Binding BuildNumberCommand}" CommandParameter="5">5</Button>
-					<Button Grid.Row="2" Grid.Column="4" Command="{Binding BuildNumberCommand}" CommandParameter="6">6</Button>
-					<Button Grid.Row="2" Grid.Column="6" Content="{materialIcons:MaterialIconExt Kind=Delete}"  />
+			<StackPanel DockPanel.Dock="Left" Width="800" Spacing="16">
+				<controls:Card Margin="16" CornerRadius="8">
+					<DataGrid
+						ItemsSource="{Binding OrdenSeleccionada.ItemsOrden}"
+						IsReadOnly="True"
+						GridLinesVisibility="All"
+						BorderThickness="1"
+						BorderBrush="GhostWhite">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Producto" Width="*" Binding="{Binding Producto.Nombre}" />
+							<DataGridTextColumn Header="Cantidad" Width="*" Binding="{Binding Kilos}" />
+							<DataGridTextColumn Header="Precio unitario" Width="*" Binding="{Binding PrecioUnitario}" />
+						</DataGrid.Columns>
+					</DataGrid>
+				</controls:Card>
+			</StackPanel>
 
-					<Button Grid.Row="4" Grid.Column="0" Command="{Binding BuildNumberCommand}" CommandParameter="1">1</Button>
-					<Button Grid.Row="4" Grid.Column="2" Command="{Binding BuildNumberCommand}" CommandParameter="2">2</Button>
-					<Button Grid.Row="4" Grid.Column="4" Command="{Binding BuildNumberCommand}" CommandParameter="3">3</Button>
-					<Button Grid.Row="4" Grid.Column="6" Grid.RowSpan="3">
-						<materialIcons:MaterialIcon Kind="Accelerometer" Foreground="White"/>
+			<controls:Card DockPanel.Dock="Right" CornerRadius="8">
+				<StackPanel>
+					<StackPanel Margin="16">
+						<TextBlock Classes="Headline6" Text="Cliente" />
+						<TextBlock Classes="Body1" Text="{Binding OrdenSeleccionada.Cliente.NombreComercial}" />
+					</StackPanel>
+
+					<StackPanel Margin="16">
+						<TextBlock Classes="Headline6" Text="RFC" />
+						<TextBlock Classes="Body1" Text="{Binding OrdenSeleccionada.Cliente.Rfc}" />
+					</StackPanel>
+
+					<StackPanel Spacing="16" Margin="16">
+						<RadioButton GroupName="FormaPago" Content="Efectivo" IsChecked="True"/>
+						<RadioButton GroupName="FormaPago" Content="Tarjeta Débito/Crédito" />
+						<RadioButton GroupName="FormaPago" Content="Transferencia" />
+						<RadioButton GroupName="FormaPago" Content="Crédito" />
+					</StackPanel>
+
+					<TextBox
+						UseFloatingWatermark="True"
+						wpf:TextFieldAssist.Label="Monto"
+						Theme="{StaticResource FilledTextBox}"
+						Text="{Binding MontoPagado}"
+						Margin="16"/>
+
+					<TextBlock Classes="Subtitle1" Text="Total"/>
+					<TextBlock Classes="Headline5" Text="{Binding OrdenSeleccionada.Total}" Margin="16"/>
+
+					<TextBlock Classes="Subtitle1" Text="Cambio"/>
+					<TextBlock Classes="Headline5" Text="{Binding Cambio}" Margin="16"/>
+
+					<Button Command="{Binding StoreCommand}" Margin="16">
+						<Button.Content>
+							<StackPanel Orientation="Horizontal" Spacing="8">
+								<materialIcons:MaterialIcon Kind="Calculator"/>
+								<TextBlock Classes="ButtonText" Text="Cobrar" />
+							</StackPanel>
+						</Button.Content>
 					</Button>
-
-
-					<Button Grid.Row="6" Grid.Column="0" Command="{Binding BuildNumberCommand}" CommandParameter="0">0</Button>
-					<Button Grid.Row="6" Grid.Column="2" Command="{Binding BuildNumberCommand}" CommandParameter="00">00</Button>
-					<Button Grid.Row="6" Grid.Column="4" Command="{Binding BuildNumberCommand}" CommandParameter=".">.</Button>
-				</Grid>
-			</WrapPanel>
-			<StackPanel>
-				<Button Command="{Binding StoreCommand}">Cobrar</Button>
-			</StackPanel>
-		</StackPanel>
+				</StackPanel>
+			</controls:Card>
+		</DockPanel>
 	</Border>
 </UserControl>

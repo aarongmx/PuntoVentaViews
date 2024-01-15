@@ -12,7 +12,7 @@ namespace PuntoVentaViews.ViewModels
     {
         private readonly ApplicationDbContext _context;
         private readonly ItemCajaMapper _mapper;
-        private ObservableCollection<ItemCajaData> _historial = new();
+        private ObservableCollection<ItemCajaData> _historial = [];
 
         public ObservableCollection<ItemCajaData> Historial { 
             get => _historial;
@@ -26,7 +26,7 @@ namespace PuntoVentaViews.ViewModels
 
             var startDate = DateTime.UtcNow;
 
-            var data = _context.ItemsCaja.Where(i => i.CajaId == 1).Select(i => _mapper.ToDto(i)).ToList() ?? new();
+            var data = _context.ItemsCaja.Where(i => i.CajaId == 1).Select(i => _mapper.ToDto(i)).ToList() ?? [];
             Historial = new ObservableCollection<ItemCajaData>(data);
         }
     }

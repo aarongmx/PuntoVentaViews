@@ -1,4 +1,5 @@
 ﻿using CorePuntoVenta;
+using CorePuntoVenta.Domain.Administracion.Data;
 using CorePuntoVenta.Domain.Helpers;
 using PuntoVentaViews.Components;
 using PuntoVentaViews.Models;
@@ -34,25 +35,22 @@ namespace PuntoVentaViews.ViewModels
             get => _session;
         }
 
-        public MainWindowViewModel(ApplicationDbContext context)
+        public MainWindowViewModel(ApplicationDbContext context, Session? session)
         {
             _context = context;
             _router = new Router(_context);
-            _session = Session.GetInstance(new CorePuntoVenta.Domain.Administracion.Data.UsuarioData());
+            _session = session;
 
-            if (_session.Value.RolId == 1)
-            {
-                Nodes = _router.Menu();
-                CurrentPage = _router.Routed(Routes.DASHBOARD);
-            }
+            Nodes = _router.Menu();
+            CurrentPage = _router.Routed(Routes.DASHBOARD);
 
-            if (_session.Value.RolId == 2)
+            if (_session?.Value.RolId == 2)
             {
                 Nodes = _router.MenuCaja();
                 CurrentPage = _router.Routed(Routes.FORM_CAJA);
             }
 
-            if (_session.Value.RolId == 3)
+            if (_session?.Value.RolId == 3)
             {
                 Nodes = _router.MenuOrden();
                 CurrentPage = _router.Routed(Routes.ORDENES);

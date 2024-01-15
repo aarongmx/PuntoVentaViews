@@ -2,12 +2,15 @@
 using CorePuntoVenta.Domain.Cajas.Actions;
 using CorePuntoVenta.Domain.Ordenes.Data;
 using CorePuntoVenta.Domain.Ordenes.Mappers;
+using CorePuntoVenta.Domain.Ordenes.Models;
 using CorePuntoVenta.Domain.Ventas.Data;
 using CorePuntoVenta.Domain.Ventas.Mappers;
 using Material.Dialog;
+using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 
@@ -15,25 +18,6 @@ namespace PuntoVentaViews.ViewModels
 {
     public class FormCajaViewModel : ViewModelBase
     {
-        private string _searchOrden;
-        public string SearchOrden
-        {
-            get => _searchOrden;
-            set => this.RaiseAndSetIfChanged(ref _searchOrden, value);
-        }
-
-        public ICommand BuildNumberCommand { get; }
-        private void BuildNumber(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return;
-            }
-
-            MontoPagado += value;
-            CalcularCambio();
-        }
-
         public ICommand ClearErrorCommand { get; }
         private void ClearError()
         {
@@ -46,17 +30,66 @@ namespace PuntoVentaViews.ViewModels
             CalcularCambio();
         }
 
+        private string _formaPago;
+        public string FormaPago
+        {
+            get => _formaPago;
+            set => this.RaiseAndSetIfChanged(ref _formaPago, value);
+        }
+
         public ICommand PagarCommand { get; }
         private void Pagar()
         {
             CalcularCambio();
         }
 
+        public ICommand BuscarOrdenCommand { get; }
+        private void BuscarOrden()
+        {
+            if (int.TryParse(OrdenId.Trim(), out int id))
+            {
+                Orden? orden = _context.Ordenes
+                    .Where(o => o.Id == id)
+                    .Include(o => o.Cliente)
+                    .Include(o => o.ItemsOrden)
+                    .ThenInclude(o => o.Producto)
+                    .AsSplitQuery()
+                    .FirstOrDefault();
+
+                if (orden == null)
+                {
+                    return;
+                }
+
+                OrdenMapper mapper = new();
+                OrdenSeleccionada = mapper.ToDto(orden);
+                OrdenSeleccionada.ItemsOrden?.ToList().ForEach(o =>
+                {
+                    Debug.WriteLine(o.PrecioUnitario);
+                });
+            }
+            else
+            {
+                return;
+            }
+        }
+
         private string _montoPagado = string.Empty;
         public string MontoPagado
         {
             get => _montoPagado;
-            set => this.RaiseAndSetIfChanged(ref _montoPagado, value);
+            set
+            {
+                if (double.TryParse(value, out double monto))
+                {
+                    Cambio = Math.Round(monto - OrdenSeleccionada.Total, 2);
+                    this.RaiseAndSetIfChanged(ref _montoPagado, value);
+                }
+                else
+                {
+                    _montoPagado = "";
+                }
+            }
         }
 
         private double _adeudo = 0;
@@ -73,25 +106,22 @@ namespace PuntoVentaViews.ViewModels
             set => this.RaiseAndSetIfChanged(ref _cambio, value);
         }
 
-        private ObservableCollection<OrdenData> _ordenes;
-        public ObservableCollection<OrdenData> Ordenes
-        {
-            get => _ordenes;
-            set => this.RaiseAndSetIfChanged(ref _ordenes, value);
-        }
-
         private OrdenData _ordenSeleccionada;
         public OrdenData OrdenSeleccionada
         {
             get => _ordenSeleccionada;
             set
             {
-                if (value is not null)
-                {
-                    Adeudo = value.Total;
-                    this.RaiseAndSetIfChanged(ref _ordenSeleccionada, value);
-                }
+                Adeudo = value.Total;
+                this.RaiseAndSetIfChanged(ref _ordenSeleccionada, value);
             }
+        }
+
+        public string _ordenId;
+        public string OrdenId
+        {
+            get => _ordenId;
+            set => this.RaiseAndSetIfChanged(ref _ordenId, value);
         }
 
         private readonly ApplicationDbContext _context;
@@ -99,13 +129,10 @@ namespace PuntoVentaViews.ViewModels
         {
             _context = context;
 
-            BuildNumberCommand = ReactiveCommand.Create<string>(BuildNumber);
             ClearErrorCommand = ReactiveCommand.Create(ClearError);
             PagarCommand = ReactiveCommand.Create(Pagar);
             StoreCommand = ReactiveCommand.Create(Store);
-
-            var data = new BuscarOrdenesPendientesAction(context).Execute();
-            Ordenes = new ObservableCollection<OrdenData>(data);
+            BuscarOrdenCommand = ReactiveCommand.Create(BuscarOrden);
         }
 
 
@@ -118,7 +145,8 @@ namespace PuntoVentaViews.ViewModels
         public ICommand StoreCommand { get; }
         private void Store()
         {
-            try
+            Debug.WriteLine(FormaPago);
+            /*try
             {
                 _ = double.TryParse(MontoPagado.ToString(), out double montoPagado);
                 var ventaData = new VentaData()
@@ -156,7 +184,6 @@ namespace PuntoVentaViews.ViewModels
                 Cambio = 0;
 
                 var data = (new BuscarOrdenesPendientesAction(_context)).Execute();
-                Ordenes = new ObservableCollection<OrdenData>(data);
                 //OrdenSeleccionada = null;
             }
             catch (Exception)
@@ -167,7 +194,7 @@ namespace PuntoVentaViews.ViewModels
                     SupportingText = "Error al intentar pagar la orden!",
                     ContentHeader = "Error al pagar orden!",
                 }).Show();
-            }
+            }*/
         }
 
     }

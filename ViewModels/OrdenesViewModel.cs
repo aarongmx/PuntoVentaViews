@@ -26,9 +26,7 @@ namespace PuntoVentaViews.ViewModels
 
         private ObservableCollection<ItemOrderUI> _itemsOrden = [];
 
-        private ObservableCollection<OrdenData> _ordenes = [
-            new OrdenData() { Id = 1 },
-        ];
+        private ObservableCollection<Orden> _ordenes = [];
 
         public ICommand AgregarProductoCommand { get; }
 
@@ -60,7 +58,7 @@ namespace PuntoVentaViews.ViewModels
             set => this.RaiseAndSetIfChanged(ref _ordenSeleccionada, value);
         }
 
-        public ObservableCollection<OrdenData> Ordenes
+        public ObservableCollection<Orden> Ordenes
         {
             get => _ordenes;
             set => this.RaiseAndSetIfChanged(ref _ordenes, value);
@@ -109,7 +107,7 @@ namespace PuntoVentaViews.ViewModels
 
         private void AddOrder()
         {
-            _ordenes.Add(new OrdenData() { Id = 2 });
+            //_ordenes.Add(new OrdenData() { Id = 2 });
         }
 
         private void GenerarOrden()
@@ -140,7 +138,7 @@ namespace PuntoVentaViews.ViewModels
                     EstatusOrdenId = 1,
                 };
 
-                new StoreOrdenAction().Execute(ordenData);
+                new StoreOrdenAction(_context).Execute(ordenData);
 
                 DialogHelper.CreateAlertDialog(new AlertDialogBuilderParams()
                 {
@@ -246,6 +244,8 @@ namespace PuntoVentaViews.ViewModels
             Session session = Session.GetInstance(new CorePuntoVenta.Domain.Administracion.Data.UsuarioData());
 
             Debug.WriteLine(session.Value.Id);
+            var data = new ListarAllOrdenesAction(context).Execute();
+            _ordenes = new ObservableCollection<Orden>(data);
 
             var productos = new ListProductosAction(context).Execute();
             Productos = new ObservableCollection<ProductoData>(productos);

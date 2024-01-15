@@ -1,31 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CorePuntoVenta;
-using CorePuntoVenta.Domain.Productos.Actions;
+﻿using CorePuntoVenta;
 using PuntoVentaViews.Components;
 using PuntoVentaViews.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace PuntoVentaViews.Models
 {
-    public class Router
+    public class Router(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
-
-        public Router(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        private readonly ApplicationDbContext _context = context;
 
         public ViewModelBase Routed(string route)
         {
             return route switch
             {
-                Routes.CLIENTES => new ClientesViewModel(),
-                Routes.NUEVO_CLIENTE => new FormClienteViewModel(),
+                Routes.CLIENTES => new ClientesViewModel(_context),
+                Routes.NUEVO_CLIENTE => new FormClienteViewModel(_context),
                 Routes.VENTAS => new VentasViewModel(_context),
                 Routes.PRODUCTOS => new ProductosViewModel(_context),
                 Routes.FORM_PRODUCTOS => new FormProductoViewModel(_context),

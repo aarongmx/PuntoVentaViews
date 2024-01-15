@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using CorePuntoVenta;
+using CorePuntoVenta.Domain.Administracion.Actions;
 using CorePuntoVenta.Domain.Administracion.Data;
 using CorePuntoVenta.Domain.Helpers;
 using PuntoVentaViews.Views;
@@ -39,14 +40,14 @@ namespace PuntoVentaViews.ViewModels
             try
             {
                 UsuarioData usuarioData = new() { Correo = Email!, Password = Password! };
-                Session? session = (new CorePuntoVenta.Domain.Administracion.Actions.LoginAction(_context)).Execute(usuarioData);
+                Session? session = (new LoginAction(_context)).Execute(usuarioData);
 
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     var currentWindow = desktop.MainWindow;
                     desktop.MainWindow = new MainWindow()
                     {
-                        DataContext = new MainWindowViewModel(_context)
+                        DataContext = new MainWindowViewModel(_context, session)
                     };
                     desktop.MainWindow.Show();
                     currentWindow?.Close();
