@@ -8,55 +8,80 @@
 			 x:DataType="vm:OrdenesViewModel"
 			 xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
 			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
-			 xmlns:data="using:CorePuntoVenta.Domain.Ordenes.Data">
-	<Border Padding="16,24">
-		<StackPanel>
-			<TextBlock Classes="h1">Ordenes</TextBlock>
-			<Button Command="{Binding AddOrderCommand}">Agregar orden</Button>
-			<ItemsRepeater ItemsSource="{Binding Ordenes}">
-				<ItemsRepeater.Layout>
-					<WrapLayout/>
-				</ItemsRepeater.Layout>
-				<ItemsRepeater.ItemTemplate>
-					<DataTemplate>
-						<controls:Card Padding="4" VerticalAlignment="Top">
-							<StackPanel>
-								<StackPanel Margin="8">
-									<TextBlock 
-										Classes="Headline6" 
-										Text="{Binding Cliente.NombreComercial}" />
-									<TextBlock
-										Classes="Body1"
-										Text="{Binding EstatusOrden.Nombre}" />
-									<TextBlock Classes="Body2" Text="{Binding Id, StringFormat='#{0}'}" />
-									<TextBlock 
-										Margin="0,12,0,0" 
-										TextWrapping="Wrap"
-										Text="{Binding Total}"/>
-								</StackPanel>
-								<DataGrid 
-									ItemsSource="{Binding ItemsOrden}"
-									AutoGenerateColumns="True"
-									IsReadOnly="True"
-									GridLinesVisibility="All"
-									BorderThickness="1"
-									BorderBrush="Gray"/>
-								<StackPanel>
-									<TextBlock 
-										Margin="0,12,0,0" 
-										TextWrapping="Wrap"
-										Text="{Binding Total}"/>
-								</StackPanel>
-								<StackPanel Orientation="Horizontal">
-									<Button Classes="Flat" Content="EDITAR" />
-									<Border Width="8" />
-									<Button Classes="Flat" Content="IMPRIMIR TICKET" />
-								</StackPanel>
-							</StackPanel>
-						</controls:Card>
-					</DataTemplate>
-				</ItemsRepeater.ItemTemplate>
-			</ItemsRepeater>
-		</StackPanel>
-	</Border>
+			 xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+			 xmlns:data="using:CorePuntoVenta.Domain.Ordenes.Data"
+			 xmlns:clienteData="using:CorePuntoVenta.Domain.Clientes.Data">
+	
+	<dialogHost:DialogHost IsOpen="{Binding OpenModal}" CornerRadius="8">
+		<dialogHost:DialogHost.DialogContent>
+			<StackPanel Width="450" MinHeight="500">
+				<TextBlock Text="Nueva orden" />
+				<AutoCompleteBox ItemsSource="{Binding Clientes}" SelectedItem="{Binding Cliente,Mode=TwoWay}" FilterMode="Contains">
+					<AutoCompleteBox.ItemTemplate>
+						<DataTemplate x:DataType="clienteData:ClienteData">
+							<TextBlock Text="{Binding RazonSocial}" />
+						</DataTemplate>
+					</AutoCompleteBox.ItemTemplate>
+				</AutoCompleteBox>
+				<Button Command="{Binding CancelarOrdenCommand}">Cancelar</Button>
+				<Button Command="{Binding GenerarOrdenCommand}">Crear Orden</Button>
+			</StackPanel>
+		</dialogHost:DialogHost.DialogContent>
+
+		<Border Padding="16,24">
+			<StackPanel>
+				<TextBlock Classes="h1">Ordenes</TextBlock>
+				<Button Command="{Binding AddOrderCommand}">Agregar orden</Button>
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<ItemsRepeater ItemsSource="{Binding Ordenes}">
+						<ItemsRepeater.Layout>
+							<WrapLayout/>
+						</ItemsRepeater.Layout>
+						<ItemsRepeater.ItemTemplate>
+							<DataTemplate>
+								<controls:Card Padding="4" VerticalAlignment="Top">
+									<StackPanel>
+										<WrapPanel>
+											<TextBlock
+												Classes="Headline6"
+												Text="{Binding Cliente.NombreComercial}" />
+											<TextBlock
+												Classes="Body1"
+												Text="{Binding EstatusOrden.Nombre}" Background="AliceBlue" />
+										</WrapPanel>
+										<TextBlock Classes="Body2" Text="{Binding Id, StringFormat='#{0}'}" />
+										<DataGrid
+											ItemsSource="{Binding ItemsOrden}"
+											IsReadOnly="True"
+											GridLinesVisibility="All"
+											BorderThickness="1"
+											BorderBrush="Gray">
+											<DataGrid.Columns>
+												<DataGridTextColumn Header="Producto" Width="*" Binding="{Binding Producto.Nombre}"/>
+												<DataGridTextColumn Header="Cantidad" Width="*" Binding="{Binding Kilos}"/>
+												<DataGridTextColumn Header="Cantidad" Width="*" Binding="{Binding PrecioUnitario}"/>
+											</DataGrid.Columns>
+										</DataGrid>
+										<StackPanel Orientation="Horizontal">
+											<TextBlock
+												Text="Total"/>
+											<TextBlock
+												Margin="0,12,0,0"
+												TextWrapping="Wrap"
+												Text="{Binding Total}"/>
+										</StackPanel>
+										<StackPanel Orientation="Horizontal">
+											<Button Classes="Flat" Content="EDITAR" />
+											<Border Width="8" />
+											<Button Classes="Flat" Content="IMPRIMIR TICKET" />
+										</StackPanel>
+									</StackPanel>
+								</controls:Card>
+							</DataTemplate>
+						</ItemsRepeater.ItemTemplate>
+					</ItemsRepeater>
+				</ScrollViewer>
+			</StackPanel>
+		</Border>
+	</dialogHost:DialogHost>
 </UserControl>

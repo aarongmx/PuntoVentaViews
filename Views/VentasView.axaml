@@ -15,7 +15,7 @@
 				<DatePicker DayFormat="ddd dd" SelectedDate="{Binding FechaFin}" wpf:TextFieldAssist.Label="Fecha Término" />
 			</StackPanel>
 			<DataGrid
-				ItemsSource="{Binding Ventas}"
+				
 				IsReadOnly="True"
 				GridLinesVisibility="All"
 				BorderThickness="1"
@@ -23,13 +23,7 @@
 				MaxHeight="512"
 				>
 				<DataGrid.Columns>
-					<DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
-					<DataGridTextColumn Header="Orden" Binding="{Binding Orden.Referencia}"/>
-					<DataGridTextColumn Header="Cliente" Binding="{Binding Orden.Cliente.RazonSocial}"/>
-					<DataGridTextColumn Header="Total" Binding="{Binding Total,StringFormat='$0.00'}"/>
-					<DataGridTextColumn Header="Iva" Binding="{Binding Iva,StringFormat='$0.00'}"/>
-					<DataGridTextColumn Header="Subtotal"  Binding="{Binding Subtotal,StringFormat='$0.00'}"/>
-					<DataGridTextColumn Header="Fecha Orden"  Binding="{Binding Orden.Fecha}"/>
+				
 				</DataGrid.Columns>
 			</DataGrid>
 			<Button Command="{Binding DescargarReporteCommand}">Descargar reporte</Button>

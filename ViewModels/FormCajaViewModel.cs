@@ -3,8 +3,6 @@ using CorePuntoVenta.Domain.Cajas.Actions;
 using CorePuntoVenta.Domain.Ordenes.Data;
 using CorePuntoVenta.Domain.Ordenes.Mappers;
 using CorePuntoVenta.Domain.Ordenes.Models;
-using CorePuntoVenta.Domain.Ventas.Data;
-using CorePuntoVenta.Domain.Ventas.Mappers;
 using Material.Dialog;
 using Microsoft.EntityFrameworkCore;
 using ReactiveUI;

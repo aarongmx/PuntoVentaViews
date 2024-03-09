@@ -31,7 +31,7 @@ namespace PuntoVentaViews.ViewModels
         {
             try
             {
-                _ = double.TryParse(Monto, out double monto);
+                /*_ = double.TryParse(Monto, out double monto);
                 ItemCajaData itemCaja = new()
                 {
                     Monto = Math.Round(monto, 2),
@@ -39,7 +39,7 @@ namespace PuntoVentaViews.ViewModels
                     Movimiento = CorePuntoVenta.Domain.Cajas.Enums.MovimientoCaja.EGRESO,
                     EmpleadoId = 1,
                 };
-                ItemCaja? item = new AgregarEfectivoAction(new CorePuntoVenta.ApplicationDbContext()).Execute(1, itemCaja);
+             ItemCaja? item = new AgregarEfectivoAction(new CorePuntoVenta.ApplicationDbContext()).Execute(1, itemCaja);
 
                 if (item is not null)
                 {
@@ -57,7 +57,7 @@ namespace PuntoVentaViews.ViewModels
                     DialogHeaderIcon = Material.Dialog.Icons.DialogIconKind.Success,
                     ContentHeader = "Retiro de efectivo correctamente!",
                     SupportingText = "Se realizo la salida de efectivo correctamente!"
-                }).Show();
+                }).Show();*/
             }
             catch (Exception)
             {

@@ -1,6 +1,5 @@
 ﻿using CorePuntoVenta;
 using CorePuntoVenta.Domain.Ventas.Actions;
-using CorePuntoVenta.Domain.Ventas.Data;
 using Material.Dialog;
 using ReactiveUI;
 using System;
@@ -13,16 +12,10 @@ namespace PuntoVentaViews.ViewModels
     public class VentasViewModel : ViewModelBase
     {
         private readonly ApplicationDbContext _context;
-        private ObservableCollection<VentaData> _ventas = new();
         public ICommand DescargarReporteCommand { get; }
         private DateTimeOffset? _fechaInicio = null;
         private DateTimeOffset? _fechaFin = null;
 
-        public ObservableCollection<VentaData> Ventas
-        {
-            get => _ventas;
-            set => this.RaiseAndSetIfChanged(ref _ventas, value);
-        }
 
         private void DescargarReporte()
         {
@@ -77,8 +70,6 @@ namespace PuntoVentaViews.ViewModels
         public VentasViewModel(ApplicationDbContext context)
         {
             _context = context;
-            var data = (new ListVentasAction(context)).Execute();
-            Ventas = new ObservableCollection<VentaData>(data);
             DescargarReporteCommand = ReactiveCommand.Create(DescargarReporte);
         }
     }

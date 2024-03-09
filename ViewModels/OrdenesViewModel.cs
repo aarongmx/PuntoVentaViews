@@ -35,6 +35,7 @@ namespace PuntoVentaViews.ViewModels
         public ICommand AddOrderCommand { get; }
 
         public ICommand RegistrarOrdenCommand { get; }
+        public ICommand CancelarOrdenCommand { get; }
 
         private string _precioUnitario;
 
@@ -51,6 +52,27 @@ namespace PuntoVentaViews.ViewModels
         private readonly ApplicationDbContext _context;
 
         private OrdenData _ordenSeleccionada;
+
+        private ClienteData _cliente;
+
+        private bool _openModal;
+
+        public bool OpenModal
+        {
+            get => _openModal;
+            set => this.RaiseAndSetIfChanged(ref _openModal, value);
+        }
+
+        public void CancelarOrden()
+        {
+            OpenModal = false;
+        }
+
+        public ClienteData Cliente
+        {
+            get => _cliente;
+            set => this.RaiseAndSetIfChanged(ref _cliente, value);
+        }
 
         public OrdenData OrdenSeleccionada
         {
@@ -107,6 +129,7 @@ namespace PuntoVentaViews.ViewModels
 
         private void AddOrder()
         {
+            OpenModal = true;
             //_ordenes.Add(new OrdenData() { Id = 2 });
         }
 
@@ -114,49 +137,28 @@ namespace PuntoVentaViews.ViewModels
         {
             try
             {
-                var items = ItemsOrden.Select(i =>
+                _context.Database.BeginTransaction();
+                Orden orden = new()
                 {
-                    _ = double.TryParse(i.PrecioUnitario, out double precio);
-                    _ = double.TryParse(i.Kilos, out double kilos);
-                    return new ItemOrdenData()
-                    {
-                        ProductoId = i.ProductoId,
-                        Kilos = Math.Round(kilos, 2),
-                        PrecioUnitario = Math.Round(precio, 2),
-                        Total = Math.Round(precio * kilos, 2),
-                    };
-                }).ToList();
-
-                OrdenData ordenData = new()
-                {
-                    EmpleadoId = 1,
-                    Fecha = DateTime.UtcNow,
-                    Kilos = KilosTotal,
-                    Total = Total,
-                    ItemsOrden = items,
-                    ClienteId = (int)ClienteSeleccionado.Id!,
+                    ClienteId = (int)Cliente.Id!,
+                    CajaId = 1,
                     EstatusOrdenId = 1,
+                    EmpleadoId = 1,
+                    Referencia="ORD-X",
+                    Fecha=DateTime.UtcNow,
                 };
+                _context.Ordenes.Add(orden);
+                _context.SaveChanges();
+                _context.Database.CommitTransaction();
 
-                new StoreOrdenAction(_context).Execute(ordenData);
-
-                DialogHelper.CreateAlertDialog(new AlertDialogBuilderParams()
-                {
-                    ContentHeader = "Orden creada!",
-                    DialogHeaderIcon = Material.Dialog.Icons.DialogIconKind.Success,
-                    SupportingText = "Orden creada correctamente!"
-                }).Show();
-            }
-            catch (Exception e)
+                Ordenes.Add(orden);
+            }catch (Exception ex)
             {
-                DialogHelper.CreateAlertDialog(new AlertDialogBuilderParams()
-                {
-                    ContentHeader = "Error al crear orden!",
-                    DialogHeaderIcon = Material.Dialog.Icons.DialogIconKind.Error,
-                    SupportingText = "Orden creada correctamente!"
-                }).Show();
-                Console.WriteLine(e.StackTrace);
+                Debug.WriteLine(ex.Message);
+                _context.Database.RollbackTransaction();
             }
+
+           
         }
 
         private void RegistrarOrden(OrdenData ordenData)
@@ -243,7 +245,6 @@ namespace PuntoVentaViews.ViewModels
             _context = context;
             Session session = Session.GetInstance(new CorePuntoVenta.Domain.Administracion.Data.UsuarioData());
 
-            Debug.WriteLine(session.Value.Id);
             var data = new ListarAllOrdenesAction(context).Execute();
             _ordenes = new ObservableCollection<Orden>(data);
 
@@ -255,6 +256,7 @@ namespace PuntoVentaViews.ViewModels
 
             AgregarProductoCommand = ReactiveCommand.Create<ProductoData>(AgregarProducto);
             GenerarOrdenCommand = ReactiveCommand.Create(GenerarOrden);
+            CancelarOrdenCommand = ReactiveCommand.Create(CancelarOrden);
 
             AddOrderCommand = ReactiveCommand.Create(AddOrder);
 

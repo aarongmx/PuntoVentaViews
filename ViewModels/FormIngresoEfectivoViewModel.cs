@@ -30,7 +30,7 @@ namespace PuntoVentaViews.ViewModels
         {
             try
             {
-                _ = double.TryParse(Monto, out double monto);
+                /*_ = double.TryParse(Monto, out double monto);
                 ItemCajaData itemCaja = new()
                 {
                     Monto = Math.Round(monto, 2),
@@ -56,7 +56,7 @@ namespace PuntoVentaViews.ViewModels
                     DialogHeaderIcon = Material.Dialog.Icons.DialogIconKind.Success,
                     ContentHeader = "Efectivo agregado correctamente!",
                     SupportingText = "Se agrego correctamente el efectivo a caja!"
-                }).Show();
+                }).Show();*/
             }
             catch (Exception)
             {
